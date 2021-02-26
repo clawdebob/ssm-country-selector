@@ -20,6 +20,11 @@ const CountrySelector = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
+  const onOptionSelected = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    console.log(value);
+  }
+
   const countryData = _.get(data, 'Country', []);
   const countriesList = _.map(countryData, item => ({
     name: item.name,
@@ -27,7 +32,7 @@ const CountrySelector = () => {
   }));
   const countryOptions = _.map(countriesList, item => (
     <option
-      key= {item.name}
+      key={item.name}
       value={item.name}
     >
       {`${item.emoji} ${item.name}`}
@@ -35,10 +40,15 @@ const CountrySelector = () => {
   ));
 
   return (
-    <select defaultValue="default">
-      <option value="default" disabled>Select a country</option>
-      {countryOptions}
-    </select>
+    <div>
+      <select
+        defaultValue="default"
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onOptionSelected(e)}
+      >
+        <option value="default" disabled>Select a country</option>
+        {countryOptions}
+      </select>
+    </div>
   );
 }
 
