@@ -1,7 +1,9 @@
 import React from 'react';
 import * as _ from 'lodash';
 import { render } from 'react-dom';
-import { gql, useQuery } from "@apollo/client"
+import { gql, useQuery } from "@apollo/client";
+import {useDispatch} from 'react-redux';
+import { setCountryState } from '../store/actions/countryActions';
 
 const GET_COUNTRIES_LIST = gql`
     query {
@@ -16,13 +18,15 @@ const GET_COUNTRIES_LIST = gql`
 
 const CountrySelector = () => {
   const { loading, error, data } = useQuery(GET_COUNTRIES_LIST);
+  const dispatch = useDispatch();
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
   const onOptionSelected = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    console.log(value);
+
+    dispatch(setCountryState(value));
   }
 
   const countryData = _.get(data, 'Country', []);
